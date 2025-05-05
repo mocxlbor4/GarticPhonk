@@ -97,7 +97,16 @@ namespace GarticTest
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error while drawing: {ex.Message}");
+                        Console.WriteLine("Error while drawing:");
+                        Console.WriteLine($"Message: {ex.Message}");
+                        Console.WriteLine($"Source: {ex.Source}");
+                        Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                        
+                        if (ex.InnerException != null)
+                        {
+                            Console.WriteLine("Inner Exception:");
+                            Console.WriteLine($"Message: {ex.InnerException.Message}");
+                        }
                     }
                     finally
                     {

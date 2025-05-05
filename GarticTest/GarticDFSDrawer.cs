@@ -46,8 +46,10 @@ namespace GarticTest
         /// </summary>
         public void DrawImageWithDFS(string filename, int strokeSize = 2, float opacity = 1.0f)
         {
-            // Load and resize the image to fit Gartic Phone canvas
-            Bitmap image = Image.FromFile(filename).ResizeImage(CanvasWidth, CanvasHeight);
+            try
+            {
+                // Load and resize the image to fit Gartic Phone canvas
+                Bitmap image = Image.FromFile(filename).ResizeImage(CanvasWidth, CanvasHeight);
             
             // Get the most used color for background
             Color backgroundColor = image.GetMostUsedColor();
@@ -78,6 +80,22 @@ namespace GarticTest
                 
                 // Pause between color groups like a human would
                 Thread.Sleep(_random.Next(200, 500));
+            }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in DrawImageWithDFS:");
+                Console.WriteLine($"Message: {ex.Message}");
+                Console.WriteLine($"Source: {ex.Source}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception:");
+                    Console.WriteLine($"Message: {ex.InnerException.Message}");
+                }
+                
+                throw; // Rethrow to allow the calling code to handle it
             }
         }
         
@@ -145,8 +163,10 @@ namespace GarticTest
         /// </summary>
         private void DrawColorGroupWithDFS(Bitmap image, Color color, List<Point> points, bool[,] visited, int strokeSize, float opacity)
         {
-            // Sort points by proximity to create more natural drawing order
-            points = points.OrderBy(p => p.X + p.Y).ToList();
+            try
+            {
+                // Sort points by proximity to create more natural drawing order
+                points = points.OrderBy(p => p.X + p.Y).ToList();
             
             foreach (Point startPoint in points)
             {
@@ -206,6 +226,22 @@ namespace GarticTest
                     DrawHumanLikeStroke(currentStroke, color, strokeSize, opacity);
                 }
             }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in DrawColorGroupWithDFS:");
+                Console.WriteLine($"Message: {ex.Message}");
+                Console.WriteLine($"Source: {ex.Source}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception:");
+                    Console.WriteLine($"Message: {ex.InnerException.Message}");
+                }
+                
+                throw; // Rethrow to allow the calling code to handle it
+            }
         }
         
         /// <summary>
@@ -245,15 +281,23 @@ namespace GarticTest
         /// </summary>
         private void DrawHumanLikeStroke(List<Point> points, Color color, int baseStrokeSize, float baseOpacity)
         {
-            if (points.Count < 2)
+            try
             {
-                // For single points, just draw a point
-                if (points.Count == 1)
+                if (points == null)
                 {
-                    _drawController.DrawPoint(color, points[0], baseStrokeSize, baseOpacity);
+                    Console.WriteLine("Warning: Null points list passed to DrawHumanLikeStroke");
+                    return;
                 }
-                return;
-            }
+                
+                if (points.Count < 2)
+                {
+                    // For single points, just draw a point
+                    if (points.Count == 1)
+                    {
+                        _drawController.DrawPoint(color, points[0], baseStrokeSize, baseOpacity);
+                    }
+                    return;
+                }
             
             // Break the stroke into smaller segments for more natural drawing
             for (int i = 0; i < points.Count - 1; i += 2)
@@ -274,6 +318,22 @@ namespace GarticTest
                     // Small delay to simulate human drawing speed
                     Thread.Sleep(_random.Next(5, 20));
                 }
+            }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in DrawHumanLikeStroke:");
+                Console.WriteLine($"Message: {ex.Message}");
+                Console.WriteLine($"Source: {ex.Source}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception:");
+                    Console.WriteLine($"Message: {ex.InnerException.Message}");
+                }
+                
+                // Don't rethrow here to allow the drawing to continue with other strokes
             }
         }
     }

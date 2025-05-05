@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GarticClient.cs" />
+    <Compile Include="GarticDFSDrawer.cs" />
     <Compile Include="GarticDrawController.cs" />
     <Compile Include="GarticImageConverter.cs" />
     <Compile Include="ImageExtensions.cs" />
